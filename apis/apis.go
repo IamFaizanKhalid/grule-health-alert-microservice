@@ -3,10 +3,12 @@ package apis
 import (
 	"../constants"
 	"../data"
+	"../grules"
 	"../models"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/hyperjumptech/grule-rule-engine/engine"
 	"log"
 	"net/http"
 	"strconv"
@@ -32,6 +34,11 @@ func GetAllPeople(w http.ResponseWriter, r *http.Request) {
 
 // UpdatePerson is handler for /person/:id.
 func UpdatePerson(w http.ResponseWriter, r *http.Request) {
+	engine := engine.NewGruleEngine()
+	if err := engine.Execute(grules.GetDataContext(), grules.GetKnowledgeBase()); err != nil {
+		panic(err)
+	}
+
 	id, err := strconv.Atoi(mux.Vars(r)["id"])
 	if err != nil {
 		log.Printf("[%v]\t%s", r.Method, constants.UpdatePersonAPIRoute)
