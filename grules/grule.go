@@ -7,6 +7,7 @@ import (
 	"github.com/hyperjumptech/grule-rule-engine/pkg"
 
 	"../data"
+	"../models"
 )
 
 var Engine = engine.NewGruleEngine()
@@ -26,13 +27,11 @@ func GetKnowledgeBase() *ast.KnowledgeBase {
 	return knowledgeBase
 }
 
-func GetDataContext() ast.IDataContext {
+func GetPersonContext(p *models.Person) ast.IDataContext {
 	dataCtx := ast.NewDataContext()
-	for i, _:=range data.People {
-		err := dataCtx.Add("PERSON", &data.People[i])
-		if err != nil {
-			panic(err)
-		}
+	err := dataCtx.Add("PERSON", p)
+	if err != nil {
+		panic(err)
 	}
 	return dataCtx
 }
