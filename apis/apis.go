@@ -13,8 +13,6 @@ import (
 	"strconv"
 )
 
-var knowledgeBase = grules.GetKnowledgeBase()
-
 // Home is handler for /.
 func Home(w http.ResponseWriter, r *http.Request) {
 	log.Printf("[%v]\t%s", r.Method, constants.HomeAPIRoute)
@@ -58,7 +56,7 @@ func UpdatePerson(w http.ResponseWriter, r *http.Request) {
 		if p.ID == int64(id) {
 			p.Weight = body.Weight
 			p.Height = body.Height
-			grules.Engine.Execute(grules.GetPersonContext(p), knowledgeBase)
+			grules.Engine.Execute(grules.GetPersonContext(p), grules.GetKnowledgeBase())
 			log.Printf("[RUN]\tPerson with id `%v` updated.", id)
 			fmt.Fprintf(w, "Person with id `%v` updated.", id)
 			return
