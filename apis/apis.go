@@ -8,11 +8,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/hyperjumptech/grule-rule-engine/engine"
 	"log"
 	"net/http"
 	"strconv"
 )
+
+var dataCtx = grules.GetDataContext()
+var knowledgeBase = grules.GetKnowledgeBase()
 
 // Home is handler for /.
 func Home(w http.ResponseWriter, r *http.Request) {
@@ -22,6 +24,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 // GetAllPeople is handler for /text.
 func GetAllPeople(w http.ResponseWriter, r *http.Request) {
+	grules.Engine.Execute(dataCtx, knowledgeBase)
 	log.Printf("[%v]\t%s", r.Method, constants.GetAllPeopleAPIRoute)
 
 	w.Header().Set("Content-Type", "application/json")
@@ -34,11 +37,6 @@ func GetAllPeople(w http.ResponseWriter, r *http.Request) {
 
 // UpdatePerson is handler for /person/:id.
 func UpdatePerson(w http.ResponseWriter, r *http.Request) {
-	engine := engine.NewGruleEngine()
-	if err := engine.Execute(grules.GetDataContext(), grules.GetKnowledgeBase()); err != nil {
-		panic(err)
-	}
-
 	id, err := strconv.Atoi(mux.Vars(r)["id"])
 	if err != nil {
 		log.Printf("[%v]\t%s", r.Method, constants.UpdatePersonAPIRoute)
@@ -56,16 +54,16 @@ func UpdatePerson(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for name, _ := range data.People {
+	for i, _ := range data.People {
+		p := &data.People[i]
 
-		if data.People[name].ID == int64(id) {
-			newPerson := data.People[name]
-			newPerson.Weight = body.Weight
-			newPerson.Height = body.Height
-			data.People[name] = newPerson
+		if p.ID == int64(id) {
+			p.Weight = body.Weight
+			p.Height = body.Height
 			log.Printf("[RUN]\tPerson with id `%v` updated.", id)
 			fmt.Fprintf(w, "Person with id `%v` updated.", id)
 			return
 		}
 	}
+	http.Error(w, "Person with given id not found.", http.StatusNotFound)
 }

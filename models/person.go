@@ -12,7 +12,7 @@ type Person struct {
 	Bmi         float64   `json:"bmi"` // weight (kg) / [height (m)]2
 }
 
-func (p *Person) UpdateBMI() float64 {
+func (p Person) UpdateBMI() float64 {
 	p.Bmi = p.Weight/ ((p.Height/100)*(p.Height/100))
 	return p.Bmi
 }

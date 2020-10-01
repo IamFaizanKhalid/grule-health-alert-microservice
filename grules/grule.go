@@ -3,10 +3,13 @@ package grules
 import (
 	"github.com/hyperjumptech/grule-rule-engine/ast"
 	"github.com/hyperjumptech/grule-rule-engine/builder"
+	"github.com/hyperjumptech/grule-rule-engine/engine"
 	"github.com/hyperjumptech/grule-rule-engine/pkg"
 
 	"../data"
 )
+
+var Engine = engine.NewGruleEngine()
 
 func GetKnowledgeBase() *ast.KnowledgeBase {
 	knowledgeLibrary := ast.NewKnowledgeLibrary()
@@ -25,8 +28,8 @@ func GetKnowledgeBase() *ast.KnowledgeBase {
 
 func GetDataContext() ast.IDataContext {
 	dataCtx := ast.NewDataContext()
-	for _, person:=range data.People {
-		err := dataCtx.Add("PERSON", &person)
+	for i, _:=range data.People {
+		err := dataCtx.Add("PERSON", &data.People[i])
 		if err != nil {
 			panic(err)
 		}
