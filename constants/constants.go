@@ -12,8 +12,11 @@ const (
 	// HomeAPIRoute is route for GET /
 	HomeAPIRoute = "/"
 
-	// GetAllPeopleAPIRoute is route for POST /people
+	// GetAllPeopleAPIRoute is route for GET /people
 	GetAllPeopleAPIRoute = "/people"
+
+	// UpdatePersonAPIRoute is route for PATCH /people/:id
+	UpdatePersonAPIRoute = "/people/{id}"
 )
 
 // GetHTTPPort will return HTTP port with prefix ":"

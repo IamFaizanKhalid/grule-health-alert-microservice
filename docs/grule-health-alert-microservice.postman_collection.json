@@ -47,6 +47,42 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "Update Person",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"height\" : 125,\n\t\"Weight\" : 120\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5678/people/:id",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5678",
+					"path": [
+						"people",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }

@@ -20,6 +20,7 @@ func handleRequests() {
 	// Routes
 	r.HandleFunc(constants.HomeAPIRoute, apis.Home).Methods("GET")
 	r.HandleFunc(constants.GetAllPeopleAPIRoute, apis.GetAllPeople).Methods("GET")
+	r.HandleFunc(constants.UpdatePersonAPIRoute, apis.UpdatePerson).Methods("PATCH")
 
 	// Config
 	r.Host("*")
